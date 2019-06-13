@@ -67,6 +67,8 @@ history = model.fit(
     batch_size=20,
     validation_data=(validation_features, validation_labels))
 
+model.save('cats_and_dogs_small_pretrainnedmodel.h5')
+
 acc = history.history['acc']
 val_acc = history.history['val_acc']
 loss = history.history['loss']

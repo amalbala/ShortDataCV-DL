@@ -1,28 +1,30 @@
-import os, shutil
-import numpy as np
+import os
 from keras.applications import VGG16
 from keras import layers
 from keras import models
 from keras import optimizers
 from keras.preprocessing.image import ImageDataGenerator
+from keras.applications.imagenet_utils import preprocess_input
+from keras.models import load_model
 import matplotlib.pyplot as plt
 
 original_dataset_dir = '/media/antonio/A8D81C3AD81C0968/Data/CatsAndDogs/train'
 base_dir = '/media/antonio/A8D81C3AD81C0968/Data/CatsAndDogs/small'
 train_dir = os.path.join(base_dir, 'train')
-validation_dir= os.path.join(base_dir, 'validation')
-test_dir= os.path.join(base_dir, 'test')
+validation_dir = os.path.join(base_dir, 'validation')
+test_dir = os.path.join(base_dir, 'test')
 
 conv_base = VGG16(weights='imagenet',
-                  include_top = False,
+                  include_top=False,
                   input_shape=(150, 150, 3))
 
 conv_base.trainable = False
 
-test_datagen = ImageDataGenerator(rescale=1./255)
+test_datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
 
 train_datagen = ImageDataGenerator(
-    rescale=1./255,
+    # rescale=1./255,
+    preprocessing_function=preprocess_input,
     rotation_range=40,
     width_shift_range=0.2,
     height_shift_range=0.2,
@@ -67,6 +69,8 @@ history = model.fit_generator(
     validation_steps=50
 )
 
+model.save('cats_and_dogs_small_pretrainAndAugmente.h5')
+
 acc = history.history['acc']
 val_acc = history.history['val_acc']
 loss = history.history['loss']
@@ -87,3 +91,5 @@ plt.title('Training and validation loss')
 plt.legend()
 
 plt.show
+
+# model = load_model('cats_and_dogs_small_pretrainAndAugmente.h5')
