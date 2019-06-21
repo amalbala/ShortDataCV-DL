@@ -52,7 +52,7 @@ for layer_name, layer_activation in zip (layer_names, activations):
                         row * size : (row+1) * size] = channel_image
 
     scale = 1. / size
-    plt.figure(figsize=(scale * display_grid.shape[1], scale * display_grid[0]))
+    plt.figure(figsize=(scale * display_grid.shape[1], scale * display_grid.shape[0]))
     plt.title(layer_name)
     plt.grid(False)
     plt.imshow(display_grid, aspect='auto', cmap = 'viridis')
